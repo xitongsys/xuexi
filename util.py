@@ -1,5 +1,7 @@
 import os,sys,math
 import cv2
+import pysift
+import aircv as ac
 import matplotlib.pyplot as plt
 
 def findPeaks(data, maxInterval, threshold = 50):
@@ -23,20 +25,21 @@ def findPeaks(data, maxInterval, threshold = 50):
             res.append([b, j])
     return res
 
+def match(imgSrc, imgSign) -> bool:
+    res = ac.find_template(imgSrc, imgSign, 0.5)
+    return res
 
+# def match(imgSrc, imgObj):
+#     img1 = cv2.imread('inputs/a.jpg')
+#     img2 = cv2.imread('pics/entrySign.jpg')
+#     img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+#     img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
 
-def match(imgSrc, imgObj):
-    img1 = cv2.imread('inputs/a.png')
-    img2 = cv2.imread('pics/entrySign.jpg')
-    img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
-    img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+#     #sift
+#     keypoints_1, descriptors_1 = pysift.computeKeypointsAndDescriptors(img1)
+#     keypoints_2, descriptors_2 = pysift.computeKeypointsAndDescriptors(img2)
 
-    #sift
-    sift = cv2.xfeatures2d.SIFT_create()
-    keypoints_1, descriptors_1 = sift.detectAndCompute(img1,None)
-    keypoints_2, descriptors_2 = sift.detectAndCompute(img2,None)
+#     print(keypoints_1, keypoints_2)
 
-    print(keypoints_1, keypoints_2)
-
-if __name__ == '__main__':
-    match(0,0)
+# if __name__ == '__main__':
+#     match(0,0)
