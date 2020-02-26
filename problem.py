@@ -61,12 +61,13 @@ class ProblemHandler(handler.Handler):
     def answer(self):
         if self.problem is None:
             return
-            
+
         answer = self.store.find(self.problem)
         if answer is None:
             self.tapAnswer(0)
             self.captureAnswer()
         else:
+            print("=====Find Answer!=====")
             idx = util.findImg(self.answers, answer)
             self.tapAnswer(idx)
         
