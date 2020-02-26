@@ -1,11 +1,11 @@
-import aircv as ac
+import handler
+import phone
 
-def match(imgSrc, imgObj, confidence=0.5):
-    imgSrc = ac.imread(imgSrc)
-    imgObj = ac.imread(imgObj)
-
-    res = ac.find_template(imgSrc, imgObj, confidence)
-    print(res)
+phone = phone.Phone()
+entryHandler = handler.Handler("pics/entrySign.jpg", phone)
 
 if __name__ == '__main__':
-    match("c.jpg", "d.jpg")
+    phone.screencast("inputs/a.png")
+    if entryHandler.check("inputs/a.png"):
+        entryHandler.handle()
+    

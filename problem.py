@@ -5,13 +5,14 @@ import peak
 import aircv as ac
 
 class Problem:
-    def __init__(self, imgSrc):
+    def __init__(self, imgSrc, phone):
         self.imgSrc = imgSrc
         self.imgSign = "pics/problemSign.jpg"
         self.y0 = 0
+        self.phone = phone
     
-    def check(self) -> bool:
-        imgSrc = ac.imread(self.imgSrc)
+    def check(self, imgSrc) -> bool:
+        imgSrc = ac.imread(imgSrc)
         imgObj = ac.imread(self.imgSign)
         res = ac.find_template(imgSrc, imgObj, 0.5)
         if res != None :
@@ -42,8 +43,6 @@ class Problem:
     
     def answer(self):
         pass
-
-
 
 
 def findCeil():
