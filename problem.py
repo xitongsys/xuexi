@@ -77,7 +77,7 @@ class ProblemHandler(handler.Handler):
         capturePath = "inputs/a0.png"
         self.phone.screencast(capturePath)
         hist = [0] * self.h
-        answerColor = [61, 92, 118]
+        answerColor = [61, 192, 118]
 
         for i in range(self.y0, self.h):
             for j in range(0, self.w):
