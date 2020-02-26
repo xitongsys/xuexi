@@ -40,8 +40,8 @@ class ProblemHandler(handler.Handler):
                 p = self.imgSrcEn[i, j]
                 if p[0] < 100 and p[1] < 100 and p[2] < 100:
                     hist[i] += 1
-        plt.plot(hist)
-        plt.show()
+        # plt.plot(hist)
+        # plt.show()
 
         self.peaks = util.findPeaks(hist, 50, 10)
         if len(self.peaks) <= 0:
