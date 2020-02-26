@@ -1,5 +1,6 @@
 import os,sys,math
 import util
+import cv2
 
 
 class Store:
@@ -23,7 +24,11 @@ class Store:
             self.answers[idx] = answer
 
     def persist(self):
-        pass
+        for i in range(0, len(self.answers)):
+            pathAnswer = os.path.join(self.path, "answer_{:06d}".format(i))
+            pathProblem = os.path.join(self.path, "problem_{:06d}".format(i))
+            cv2.imwrite(pathProblem, self.problems[i])
+            cv2.imwrite(pathAnswer, self.answers[i])
 
     def load(self):
         pass

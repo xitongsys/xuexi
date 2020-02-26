@@ -1,5 +1,4 @@
 import os,sys,math
-from PIL import Image, ImageEnhance
 import matplotlib.pyplot as plt
 import aircv as ac
 import cv2
@@ -8,10 +7,13 @@ import util
 
 class ProblemHandler(handler.Handler):
     def __init__(self, imgSrc, phone, store):
-        super(ProblemHandler, "pics/problemSign.jpg", phone)
+        super().__init__("pics/problemSign.jpg", phone)
         self.y0 = 0
         self.peaks = []
         self.store = store
+        self.problem = None
+        self.answers = []
+        self.w, self.h = 0, 0
     
     def check(self, imgSrc) -> bool:
         self.imgSrc = ac.imread(imgSrc)
@@ -23,62 +25,77 @@ class ProblemHandler(handler.Handler):
     
     def handle(self):
         self.getInfo()
+        self.answer()
 
 
     def getInfo(self):
         self.imgSrcEn = cv2.convertScaleAbs(self.imgSrc, alpha=1.5, beta=0)
-        w, h, _ = self.imgSrc.shape
-        hist = [0] * h
-        for i in range(y0, h):
-            for j in range(0, w):
-                p = pix[j, i]
-                if p[0] < 50 and p[1] < 50 and p[2] < 50:
+        # cv2.imshow('image', self.imgSrcEn)
+        # cv2.waitKey(0)
+
+        self.h, self.w, _ = self.imgSrc.shape
+        hist = [0] * self.h
+        for i in range(self.y0, self.h):
+            for j in range(0, self.w):
+                p = self.imgSrcEn[i, j]
+                if p[0] < 100 and p[1] < 100 and p[2] < 100:
                     hist[i] += 1
+        # plt.plot(hist)
+        # plt.show()
+
         self.peaks = util.findPeaks(hist, 50, 10)
         if len(self.peaks) <= 0:
             return
         
-        
+        bi, ei = self.peaks[0]
+        self.problem = self.imgSrc[bi:ei, 0:self.w]
+        self.answers = []
+        for p in self.peaks[1:]:
+            bi, ei = p
+            self.answers.append(self.imgSrc[bi:ei, 0:self.w])
 
-        
 
     def learn(self):
         pass
     
     def answer(self):
-        pass
+        answer = self.store.find(self.problem)
+        if answer == None:
+            self.tapAnswer(0)
+            self.captureAnswer()
+        else:
+            idx = util.findImg(self.answers, answer)
+            self.tapAnswer(idx)
+        
+
+    def tapAnswer(self, idx):
+        print(idx, self.peaks)
+        bi, ei = self.peaks[idx + 1]
+        self.phone.tap(int(self.w/2), int((bi+ei)/2))
+
+    def captureAnswer(self):
+        capturePath = "inputs/a0.png"
+        self.phone.screencast(capturePath)
+        hist = [0] * self.h
+        answerColor = [61, 92, 118]
+
+        for i in range(self.y0, self.h):
+            for j in range(0, self.w):
+                p = self.imgSrcEn[i, j]
+                if util.dis(answerColor, p)
+                    hist[i] += 1
+
+        peaks = util.findPeaks(hist, 50, 10)
+        if len(peaks) > 0:
+            b,e = peaks[0]
+            pos = int((b+e)/2)
+            for i in range(1, len(self.peaks)):
+                b,e = self.peaks[i]
+                if pos >= b and pos <= e:
+                    self.store.add(self.problem, self.answers[i-1])
+                    self.store.persist()
+                    return
 
 
-def findCeil():
-    imgSrc = ac.imread("e.jpg")
-    imgObj = ac.imread("b.jpg")
-    res = ac.find_template(imgSrc, imgObj, 0.5)
-    print(res)
-    return res['rectangle'][3][1]
-
-y0 = int(findCeil()) + 10
-
-im = Image.open('e.jpg')
-enhanceContrast = ImageEnhance.Contrast(im)
-im = enhanceContrast.enhance(1.5)
-
-pix = im.load()
-w, h = im.size
-hist = [0] * h
-for i in range(y0, h):
-    for j in range(0, w):
-        p = pix[j, i]
-        if p[0] < 50 and p[1] < 50 and p[2] < 50:
-            hist[i] += 1
-
-peaks = peak.findPeaks(hist, 50, 10)
-print(peaks)
-
-for ps in peaks:
-    rect = [0, ps[0], w-1, ps[1]]
-    imCrop = im.crop(rect)
-    #imCrop.show()
 
 
-plt.plot(hist)
-plt.show()

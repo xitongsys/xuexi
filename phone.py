@@ -11,3 +11,7 @@ class Phone:
 
     def tap(self, x, y):
         os.system("adb shell input tap {} {}".format(x, y))
+
+if __name__ == '__main__':
+    phone = Phone()
+    phone.screencast("inputs/a.png")
