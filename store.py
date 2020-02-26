@@ -14,6 +14,7 @@ class Store:
         idx = util.findImg(self.problems, problem)
         if idx < 0:
             return None
+        print("store find ", idx)
         return self.answers[idx]
     
     def add(self, problem, answer):

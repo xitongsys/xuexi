@@ -31,7 +31,12 @@ def match(imgSrc, imgSign, threshold=0.8) -> bool:
     return res
 
 def similarity(img1, img2):
-    h, w, _ = img2.shape
+    h1, w1, _ = img1.shape
+    h2, w2, _ = img2.shape
+    if abs(h1-h2)/max(h1,h2) > 0.1:
+        return -1
+        
+    h, w = min(h1,h2), min(w1, w2)    
     img1 = cv2.resize(img1, (h, w))
     img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
     img2 = cv2.resize(img2, (h,w))

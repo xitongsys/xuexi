@@ -24,6 +24,7 @@ class ProblemHandler(handler.Handler):
         return False
     
     def handle(self):
+        print("Handle problem")
         self.getInfo()
         self.answer()
 
@@ -70,6 +71,7 @@ class ProblemHandler(handler.Handler):
             print("=====Find Answer!=====")
             idx = util.findImg(self.answers, answer)
             self.tapAnswer(idx)
+            self.captureAnswer()
         
 
     def tapAnswer(self, idx):

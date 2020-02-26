@@ -29,7 +29,8 @@ if __name__ == '__main__':
             backHandler.handle()
 
         else:
-            time.sleep(1)
+            pass
+            #time.sleep(1)
     
 
     
