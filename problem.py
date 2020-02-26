@@ -59,6 +59,9 @@ class ProblemHandler(handler.Handler):
         pass
     
     def answer(self):
+        if self.problem is None:
+            return
+            
         answer = self.store.find(self.problem)
         if answer is None:
             self.tapAnswer(0)
