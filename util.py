@@ -3,6 +3,7 @@ import cv2
 import pysift
 import aircv as ac
 import matplotlib.pyplot as plt
+from skimage.measure import structural_similarity as ssim
 
 def findPeaks(data, maxInterval, threshold = 50):
     res = []
@@ -28,6 +29,17 @@ def findPeaks(data, maxInterval, threshold = 50):
 def match(imgSrc, imgSign) -> bool:
     res = ac.find_template(imgSrc, imgSign, 0.5)
     return res
+
+def similarity(img1, img2):
+    return ssim(img1, img2)
+
+def findImg(imgs, tar, threshold = 0.5):
+    for i in range(0, len(imgs)):
+        if similarity(imgs[i], tar) > threshold:
+            return i
+    return -1
+
+
 
 # def match(imgSrc, imgObj):
 #     img1 = cv2.imread('inputs/a.jpg')

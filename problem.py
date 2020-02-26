@@ -2,14 +2,16 @@ import os,sys,math
 from PIL import Image, ImageEnhance
 import matplotlib.pyplot as plt
 import aircv as ac
+import cv2
 import handler
 import util
 
 class ProblemHandler(handler.Handler):
-    def __init__(self, imgSrc, phone):
+    def __init__(self, imgSrc, phone, store):
         super(ProblemHandler, "pics/problemSign.jpg", phone)
         self.y0 = 0
         self.peaks = []
+        self.store = store
     
     def check(self, imgSrc) -> bool:
         self.imgSrc = ac.imread(imgSrc)
@@ -24,10 +26,8 @@ class ProblemHandler(handler.Handler):
 
 
     def getInfo(self):
-        enhanceContrast = ImageEnhance.Contrast(self.imgSrc)
-        self.imgSrcEn = enhanceContrast.enhance(1.5)
-        pix = self.imgSrcEn.load()
-        w, h = self.imgSrc.size
+        self.imgSrcEn = cv2.convertScaleAbs(self.imgSrc, alpha=1.5, beta=0)
+        w, h, _ = self.imgSrc.shape
         hist = [0] * h
         for i in range(y0, h):
             for j in range(0, w):
@@ -35,6 +35,12 @@ class ProblemHandler(handler.Handler):
                 if p[0] < 50 and p[1] < 50 and p[2] < 50:
                     hist[i] += 1
         self.peaks = util.findPeaks(hist, 50, 10)
+        if len(self.peaks) <= 0:
+            return
+        
+        
+
+        
 
     def learn(self):
         pass
