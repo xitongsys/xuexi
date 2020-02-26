@@ -7,7 +7,7 @@ import util
 
 class ProblemHandler(handler.Handler):
     def __init__(self, imgSrc, phone, store):
-        super().__init__("pics/problemSign.jpg", phone)
+        super().__init__("problem", "pics/problemSign.jpg", phone)
         self.y0 = 0
         self.peaks = []
         self.store = store
@@ -60,7 +60,7 @@ class ProblemHandler(handler.Handler):
     
     def answer(self):
         answer = self.store.find(self.problem)
-        if answer == None:
+        if answer is None:
             self.tapAnswer(0)
             self.captureAnswer()
         else:
@@ -69,33 +69,31 @@ class ProblemHandler(handler.Handler):
         
 
     def tapAnswer(self, idx):
-        print(idx, self.peaks)
+        if idx+1 >= len(self.peaks):
+            return
         bi, ei = self.peaks[idx + 1]
         self.phone.tap(int(self.w/2), int((bi+ei)/2))
 
     def captureAnswer(self):
         capturePath = "inputs/a0.png"
         self.phone.screencast(capturePath)
-        hist = [0] * self.h
+        imgAnswer = cv2.imread(capturePath)
         answerColor = [61, 192, 118]
+        
+        mindis, minidx = -1, 1
+        for pi in range(1, len(self.peaks)):
+            b, e = self.peaks[pi]
+            s = 0
+            for i in range(b, e):
+                for j in range(0, self.w):
+                    cp = imgAnswer[i, j]
+                    dis = util.dis(answerColor, cp)
+                    s += dis
 
-        for i in range(self.y0, self.h):
-            for j in range(0, self.w):
-                p = self.imgSrcEn[i, j]
-                if util.dis(answerColor, p)
-                    hist[i] += 1
-
-        peaks = util.findPeaks(hist, 50, 10)
-        if len(peaks) > 0:
-            b,e = peaks[0]
-            pos = int((b+e)/2)
-            for i in range(1, len(self.peaks)):
-                b,e = self.peaks[i]
-                if pos >= b and pos <= e:
-                    self.store.add(self.problem, self.answers[i-1])
-                    self.store.persist()
-                    return
-
+            if mindis < 0 or mindis > s:
+                mindis, minidx = s, pi
+      
+        self.store.add(self.problem, self.answers[minidx - 1])
 
 
 

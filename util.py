@@ -1,6 +1,5 @@
 import os,sys,math
 import cv2
-import pysift
 import aircv as ac
 import matplotlib.pyplot as plt
 from skimage import measure
@@ -28,13 +27,18 @@ def findPeaks(data, maxInterval, threshold = 50):
     return res
 
 def match(imgSrc, imgSign) -> bool:
-    res = ac.find_template(imgSrc, imgSign, 0.5)
+    res = ac.find_template(imgSrc, imgSign, 0.8)
     return res
 
 def similarity(img1, img2):
+    h, w, _ = img2.shape
+    img1 = cv2.resize(img1, (h, w))
+    img1 = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+    img2 = cv2.resize(img2, (h,w))
+    img2 = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
     return measure.compare_ssim(img1, img2)
 
-def findImg(imgs, tar, threshold = 0.5):
+def findImg(imgs, tar, threshold = 0.9):
     for i in range(0, len(imgs)):
         if similarity(imgs[i], tar) > threshold:
             return i
@@ -44,8 +48,8 @@ def dis(a, b):
     ln = len(a)
     s, ds = 0, 0
     for i in range(0, ln):
-        s += (a[i] - b[i])**2
-        ds += a[i]**2
+        ds += (a[i] - b[i])**2
+        s += a[i]**2
     return ds/s
 
 
