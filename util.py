@@ -26,8 +26,8 @@ def findPeaks(data, maxInterval, threshold = 50):
             res.append([b, j])
     return res
 
-def match(imgSrc, imgSign) -> bool:
-    res = ac.find_template(imgSrc, imgSign, 0.8)
+def match(imgSrc, imgSign, threshold=0.8) -> bool:
+    res = ac.find_template(imgSrc, imgSign, threshold)
     return res
 
 def similarity(img1, img2):
