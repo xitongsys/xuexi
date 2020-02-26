@@ -1,42 +1,40 @@
 import os,sys,math
 from PIL import Image, ImageEnhance
 import matplotlib.pyplot as plt
-import peak
 import aircv as ac
+import handler
+import util
 
-class Problem:
+class ProblemHandler(handler.Handler):
     def __init__(self, imgSrc, phone):
-        self.imgSrc = imgSrc
-        self.imgSign = "pics/problemSign.jpg"
+        super(ProblemHandler, "pics/problemSign.jpg", phone)
         self.y0 = 0
-        self.phone = phone
+        self.peaks = []
     
     def check(self, imgSrc) -> bool:
-        imgSrc = ac.imread(imgSrc)
-        imgObj = ac.imread(self.imgSign)
-        res = ac.find_template(imgSrc, imgObj, 0.5)
+        self.imgSrc = ac.imread(imgSrc)
+        res = util.match(self.imgSrc, self.imgSign)
         if res != None :
             self.y0 = res['rectangle'][3][1] + 10
             return True
         return False
     
     def handle(self):
-        pass
+        self.getInfo()
+
 
     def getInfo(self):
-        self.im = Image.open(self.imgSrc)
-        enhanceContrast = ImageEnhance.Contrast(self.im)
-        self.im = enhanceContrast.enhance(1.5)
-        pix = self.im.load()
-        w, h = self.im.size
+        enhanceContrast = ImageEnhance.Contrast(self.imgSrc)
+        self.imgSrcEn = enhanceContrast.enhance(1.5)
+        pix = self.imgSrcEn.load()
+        w, h = self.imgSrc.size
         hist = [0] * h
         for i in range(y0, h):
             for j in range(0, w):
                 p = pix[j, i]
                 if p[0] < 50 and p[1] < 50 and p[2] < 50:
                     hist[i] += 1
-
-        self.peaks = peak.findPeaks(hist, 50, 10)
+        self.peaks = util.findPeaks(hist, 50, 10)
 
     def learn(self):
         pass
