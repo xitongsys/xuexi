@@ -35,8 +35,10 @@ class Store:
     def load(self):
         pics = []
         for f in os.listdir(self.path):
-            if os.path.isfile(f):
-                pics.append(f)
+            pf = os.path.join(self.path, f)
+            if os.path.isfile(pf):
+                pics.append(pf)
+        pics.sort()
         num = len(pics)
         for i in range(0, num, 2):
             pathAnswer, pathProblem = pics[i], pics[i+1]
