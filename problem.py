@@ -40,8 +40,8 @@ class ProblemHandler(handler.Handler):
                 p = self.imgSrcEn[i, j]
                 if p[0] < 100 and p[1] < 100 and p[2] < 100:
                     hist[i] += 1
-        #plt.plot(hist)
-        #plt.show()
+        # plt.plot(hist)
+        # plt.show()
 
         self.peaks = util.findPeaks(hist, 25, 2)
         # print(self.peaks)
@@ -90,17 +90,24 @@ class ProblemHandler(handler.Handler):
         mindis, minidx = -1, 1
         for pi in range(1, len(self.peaks)):
             b, e = self.peaks[pi]
-            s = 0
+            s, n = 0, 0
             for i in range(b, e):
                 for j in range(0, self.w):
                     cp = imgAnswer[i, j]
                     dis = util.dis(answerColor, cp)
                     s += dis
-
+                    n += 1
+            s /= n
             if mindis < 0 or mindis > s:
                 mindis, minidx = s, pi
-      
+        
         self.store.add(self.problem, self.answers[minidx - 1])
 
+
+
+if __name__ == "__main__" :
+    pb = ProblemHandler("inputs/a0.png", None, None)
+    pb.imgSrc = cv2.imread("inputs/a0.png")    
+    pb.captureAnswer()
 
 
