@@ -11,7 +11,7 @@ class Phone:
         tmpName = name + "tmp.png"
         os.system("adb pull /sdcard/a.png " + tmpName)
         img = cv2.imread(tmpName)
-        img = util.resizeToGrayImg(img, scale)
+        img = util.resizeImg(img, scale)
         cv2.imwrite(name, img)
         
 
@@ -20,4 +20,4 @@ class Phone:
 
 if __name__ == '__main__':
     phone = Phone()
-    phone.screencast("inputs/a.png", 0.5)
+    phone.screencast("inputs/a0.png", 0.5)

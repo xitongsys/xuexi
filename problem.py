@@ -18,7 +18,7 @@ class ProblemHandler(handler.Handler):
         self.imgSrc = ac.imread(imgSrc)
         res = util.match(self.imgSrc, self.imgSign, 0.9)
         if res != None :
-            self.y0 = res['rectangle'][3][1] + 80*paras.SCALE
+            self.y0 = int(res['rectangle'][3][1] + 80*paras.SCALE)
             return True
         return False
     
@@ -40,10 +40,12 @@ class ProblemHandler(handler.Handler):
                 p = self.imgSrcEn[i, j]
                 if p[0] < 100 and p[1] < 100 and p[2] < 100:
                     hist[i] += 1
-        # plt.plot(hist)
-        # plt.show()
+        #plt.plot(hist)
+        #plt.show()
 
-        self.peaks = util.findPeaks(hist, 50, 10)
+        self.peaks = util.findPeaks(hist, 20, 10)
+        # print(self.peaks)
+
         if len(self.peaks) <= 0:
             return
         

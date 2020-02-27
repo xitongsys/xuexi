@@ -8,6 +8,7 @@ endHandler = handler.Handler("end", "pics/endSign.jpg", phone)
 retryHandler = handler.Handler("retry", "pics/retrySign.jpg", phone)
 exitHandler = handler.Handler("exit", "pics/exitSign.jpg", phone)
 backHandler = handler.Handler("back", "pics/backSign.jpg", phone)
+wrongHandler = handler.Handler("wrong", "pics/wrongSign.jpg", phone)
 problemHandler = problem.ProblemHandler("pics/problemSign.jpg", phone, store)
 
 inputFile = "inputs/a.png"
@@ -25,7 +26,8 @@ if __name__ == '__main__':
             exitHandler.handle()
         elif problemHandler.check(inputFile):
             problemHandler.handle()
-        elif backHandler.check(inputFile):
+        elif wrongHandler.check(inputFile):
+            backHandler.check(inputFile)
             backHandler.handle()
 
         else:

@@ -54,6 +54,11 @@ def resizeToGrayImg(img, scale):
     img = cv2.resize(img, (int(w*scale), int(h*scale)))
     img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     return img
+
+def resizeImg(img, scale):
+    h, w, _ = img.shape
+    img = cv2.resize(img, (int(w*scale), int(h*scale)))
+    return img
     
 
 def dis(a, b):
