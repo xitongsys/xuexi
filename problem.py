@@ -43,7 +43,7 @@ class ProblemHandler(handler.Handler):
         #plt.plot(hist)
         #plt.show()
 
-        self.peaks = util.findPeaks(hist, 20, 10)
+        self.peaks = util.findPeaks(hist, 25, 5)
         # print(self.peaks)
 
         if len(self.peaks) <= 0:
