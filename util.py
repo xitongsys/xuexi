@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 from skimage import measure
 
 
-def findPeaks(data, maxInterval, threshold = 50):
+def findPeaks(data, maxInterval, threshold = 25):
     res = []
     ln = len(data)
     i = 0
@@ -26,7 +26,7 @@ def findPeaks(data, maxInterval, threshold = 50):
             res.append([b, j])
     return res
 
-def match(imgSrc, imgSign, threshold=0.8) -> bool:
+def match(imgSrc, imgSign, threshold=0.95) -> bool:
     res = ac.find_template(imgSrc, imgSign, threshold)
     return res
 
