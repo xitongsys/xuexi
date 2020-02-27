@@ -44,9 +44,16 @@ def similarity(img1, img2):
     return measure.compare_ssim(img1, img2)
 
 def findImg(imgs, tar, threshold = 0.9):
+    maxSim, maxidx = -1, 0
     for i in range(0, len(imgs)):
-        if similarity(imgs[i], tar) > threshold:
-            return i
+        s = similarity(imgs[i], tar)
+        if s > maxSim:
+            maxSim, maxidx = s, i
+    
+    print("=====", maxSim)
+    if maxSim > threshold:
+        return maxidx
+    
     return -1
 
 def resizeToGrayImg(img, scale):

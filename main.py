@@ -20,10 +20,10 @@ if __name__ == '__main__':
             entryHandler.handle()
         elif endHandler.check(inputFile):
             endHandler.handle()
-        elif retryHandler.check(inputFile):
-            retryHandler.handle()
         elif exitHandler.check(inputFile):
             exitHandler.handle()
+        elif retryHandler.check(inputFile):
+            retryHandler.handle()
         elif problemHandler.check(inputFile):
             problemHandler.handle()
         elif wrongHandler.check(inputFile):

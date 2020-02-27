@@ -43,7 +43,7 @@ class ProblemHandler(handler.Handler):
         #plt.plot(hist)
         #plt.show()
 
-        self.peaks = util.findPeaks(hist, 25, 5)
+        self.peaks = util.findPeaks(hist, 25, 2)
         # print(self.peaks)
 
         if len(self.peaks) <= 0:
@@ -69,8 +69,8 @@ class ProblemHandler(handler.Handler):
             self.tapAnswer(0)
             self.captureAnswer()
         else:
-            print("=====Find Answer!=====")
             idx = util.findImg(self.answers, answer)
+            print("=====Find Answer!=====", idx)
             self.tapAnswer(idx)
             self.captureAnswer()
         
