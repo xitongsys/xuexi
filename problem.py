@@ -2,8 +2,7 @@ import os,sys,math
 import matplotlib.pyplot as plt
 import aircv as ac
 import cv2
-import handler
-import util
+import handler, util, paras
 
 class ProblemHandler(handler.Handler):
     def __init__(self, imgSrc, phone, store):
@@ -19,7 +18,7 @@ class ProblemHandler(handler.Handler):
         self.imgSrc = ac.imread(imgSrc)
         res = util.match(self.imgSrc, self.imgSign, 0.9)
         if res != None :
-            self.y0 = res['rectangle'][3][1] + 80
+            self.y0 = res['rectangle'][3][1] + 80*paras.SCALE
             return True
         return False
     
@@ -78,11 +77,11 @@ class ProblemHandler(handler.Handler):
         if idx+1 >= len(self.peaks):
             return
         bi, ei = self.peaks[idx + 1]
-        self.phone.tap(int(self.w/2), int((bi+ei)/2))
+        self.phone.tap(int(self.w/2), int((bi+ei)/2), paras.SCALE)
 
     def captureAnswer(self):
         capturePath = "inputs/a0.png"
-        self.phone.screencast(capturePath)
+        self.phone.screencast(capturePath, paras.SCALE)
         imgAnswer = cv2.imread(capturePath)
         answerColor = [61, 192, 118]
         

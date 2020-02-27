@@ -1,5 +1,5 @@
 import time
-import problem, store, phone, handler
+import problem, store, phone, handler, paras
 
 store = store.Store("./store")
 phone = phone.Phone()
@@ -14,7 +14,7 @@ inputFile = "inputs/a.png"
 
 if __name__ == '__main__':
     while True:
-        phone.screencast(inputFile)
+        phone.screencast(inputFile, paras.SCALE)
         if entryHandler.check(inputFile):
             entryHandler.handle()
         elif endHandler.check(inputFile):

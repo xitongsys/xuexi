@@ -1,6 +1,6 @@
 import os,sys,math
 import aircv as ac
-import util
+import util, paras
 
 class Handler:
     def __init__(self, name, imgSign, phone):
@@ -20,5 +20,5 @@ class Handler:
     
     def handle(self):
         print("handle ", self.name)
-        self.phone.tap(self.point[0], self.point[1])
+        self.phone.tap(self.point[0], self.point[1], paras.SCALE)
         
