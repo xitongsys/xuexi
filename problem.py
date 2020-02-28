@@ -1,4 +1,4 @@
-import os,sys,math
+import os,sys,math,time
 import matplotlib.pyplot as plt
 import aircv as ac
 import cv2
@@ -69,11 +69,23 @@ class ProblemHandler(handler.Handler):
             self.tapAnswer(0)
             self.captureAnswer()
         else:
-            idx = util.findImg(self.answers, answer)
-            print("=====Find Answer!=====", idx)
-            self.tapAnswer(idx)
-            self.captureAnswer()
-        
+            res = util.match(self.imgSrc, answer)
+            if res is None:
+                self.tapAnswer(0)
+                self.captureAnswer()
+                return
+            
+            point = int(res['result'][0]), int(res['result'][1])
+            #idx = util.findImg(self.answers, answer)
+            #print("=====Find Answer!=====", idx)
+            #self.tapAnswer(idx)
+            print("======find answer======", point[0], point[1])
+            self.tapPosition(point[0], point[1])
+            time.sleep(1) #skip the middle status: right answer but wrong sign
+            #self.captureAnswer()
+
+    def tapPosition(self, x, y):
+        self.phone.tap(x, y, paras.SCALE)    
 
     def tapAnswer(self, idx):
         if idx+1 >= len(self.peaks):

@@ -26,7 +26,7 @@ def findPeaks(data, maxInterval, threshold = 25):
             res.append([b, j])
     return res
 
-def match(imgSrc, imgSign, threshold=0.95) -> bool:
+def match(imgSrc, imgSign, threshold=0.9) -> bool:
     res = ac.find_template(imgSrc, imgSign, threshold)
     return res
 
@@ -50,7 +50,6 @@ def findImg(imgs, tar, threshold = 0.9):
         if s > maxSim:
             maxSim, maxidx = s, i
     
-    print("=====", maxSim)
     if maxSim > threshold:
         return maxidx
     
