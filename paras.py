@@ -1,1 +1,3 @@
 SCALE = 0.5
+
+INDEX = 0

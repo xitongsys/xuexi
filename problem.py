@@ -24,6 +24,8 @@ class ProblemHandler(handler.Handler):
     
     def handle(self):
         print("Handle problem")
+        cv2.imwrite("problems_backup/{:06d}.png".format(paras.INDEX), self.imgSrc)
+        paras.INDEX += 1
         self.getInfo()
         self.answer()
 

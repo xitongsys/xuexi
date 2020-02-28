@@ -27,6 +27,7 @@ if __name__ == '__main__':
         elif problemHandler.check(inputFile):
             problemHandler.handle()
         elif wrongHandler.check(inputFile):
+            break
             backHandler.check(inputFile)
             backHandler.handle()
 
