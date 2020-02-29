@@ -68,11 +68,13 @@ class ProblemHandler(handler.Handler):
 
         answer = self.store.find(self.problem)
         if answer is None:
+            print("answer not found")
             self.tapAnswer(0)
             self.captureAnswer()
         else:
             res = util.match(self.imgSrc, answer)
             if res is None:
+                print("answer not match")
                 self.tapAnswer(0)
                 self.captureAnswer()
                 return

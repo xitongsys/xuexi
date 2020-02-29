@@ -26,7 +26,7 @@ def findPeaks(data, maxInterval, threshold = 25):
             res.append([b, j])
     return res
 
-def match(imgSrc, imgSign, threshold=0.9) -> bool:
+def match(imgSrc, imgSign, threshold=0.89):
     res = ac.find_template(imgSrc, imgSign, threshold)
     return res
 
