@@ -1,0 +1,30 @@
+{
+  "description": "自动学习强国",
+  "manifest_version": 2,
+  "name": "xuexi",
+  "version": "1.0",
+  "homepage_url": "https://github.com/xitongsys/studyforchina",
+  "icons": {
+    "48": "icons/logo-48.png"
+  },
+
+  "permissions": [
+    "activeTab"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/logo-32.png",
+    "theme_icons": [{
+        "light": "icons/logo-32.png",
+        "dark": "icons/logo-32.png",
+        "size": 32
+    }],
+    "default_title": "XueXi",
+    "default_popup": "popup/choose.html"
+  },
+
+  "web_accessible_resources": [
+    ""
+  ]
+
+}
