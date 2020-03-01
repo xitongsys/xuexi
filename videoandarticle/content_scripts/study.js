@@ -1,22 +1,21 @@
-function createStudyWindow(id, title){
+function createStudyWindow(){
   var win = document.createElement("div");
   win.className = "study-window";
-  win.id = id;
-  win.innerHTML = `<h3>` + title + `</h3>`;
+  win.id = "study-window";
+  win.innerHTML = `<h3>正在学习......</h3>`;
   win.style.width = "100%";
-  win.style.height = "400px";
+  win.style.height = "500px";
 
   var frame = document.createElement("iframe");
   frame.className = "study-window-iframe";
-  frame.id = id + "-iframe";
+  frame.id = "study-window-iframe";
   frame.style.width = "100%";
-  frame.style.height = "400px";
+  frame.style.height = "100%";
   win.append(frame);
   return win;
 }
 
-var videoWindow = createStudyWindow("video-window", "视频学习");
-var articleWindow = createStudyWindow("article-window", "文章学习");
+var studyWindow = createStudyWindow();
 
 
 (function() {
@@ -25,20 +24,28 @@ var articleWindow = createStudyWindow("article-window", "文章学习");
   }
   window.hasRun = true;
 
-  var cssurl = browser.extension.getURL("resources/style.css");
-  alert(cssurl);
-
-  //videoWin.src = cssurl;
-  //document.write('<link rel="stylesheet" type="text/css" href="' + cssurl + '">');
-
   function start() { 
-    document.body.append(videoWindow);
-    document.body.append(articleWindow);
+    //document.body.append(studyWindow);
+    studyWindow.children[1].src = window.location.href; 
+    
+
+    var pages = document.getElementsByClassName("text-wrap");
+    var buttons = document.getElementsByClassName("btn");
+
+    for(var i=0; i < pages.length; i++){
+      pages[i].children[0].click();
+    }
+
+    browser.runtime.sendMessage({command: "start"});
+
+    setTimeout(function(){
+      browser.runtime.sendMessage({command: "stop"});
+    }, 1000*10);
+  
   }
 
   function stop() {
-    document.body.remove(videoWindow);
-    document.body.remove(articleWindow);
+    //document.body.remove(studyWindow);
   }
 
   browser.runtime.onMessage.addListener((message) => {

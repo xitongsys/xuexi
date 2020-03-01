@@ -1,6 +1,8 @@
-const hidePage = `body > :not(.study-window) {
-                    display: none;
-                  }`;
+// const hidePage = `body > :not(.study-window) {
+//                     display: none;
+//                   }`;
+
+const hidePage = ``;
 
 function listenForClicks() {
   document.addEventListener("click", (e) => {
@@ -46,3 +48,24 @@ function reportExecuteScriptError(error) {
 browser.tabs.executeScript({file: "/content_scripts/study.js"})
 .then(listenForClicks)
 .catch(reportExecuteScriptError);
+
+browser.runtime.onMessage.addListener((message) => {
+  if (message.command === "start") {
+    browser.tabs.query({currentWindow: true})
+    .then((tabs)=>{
+      var idx = 0;
+      function nextTab(){
+        browser.tabs.update(tabs[idx].id, {active: true});
+        idx += 1;
+        setTimeout(nextTab, 2000);
+      }
+      nextTab();
+    });
+
+  }else if(message.command === "stop") {
+    browser.tabs.query({currentWindow: true})
+    .then((tabs)=>{
+      browser.tabs.remove(tabs.slice(1).map(t=>t.id));
+    });
+  }
+});
