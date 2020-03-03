@@ -16,7 +16,7 @@ def studyOne(url):
     try:
         browser.get(url)
         html = browser.page_source
-        time.sleep(60 * 3)
+        time.sleep(10)
         finishedPages.add(url)
         f = open(FINISHED_LIST_FILE, "a+")
         f.write(url + "\n")
@@ -72,6 +72,5 @@ def study():
         time.sleep(3600*20)
 
 if __name__ == '__main__':
-    print("Please login first")
-    sys.stdin.read()
+    input("Please login first")
     study()
