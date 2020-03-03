@@ -51,7 +51,7 @@ def dfsJson(jsonObject, output):
                 pages.add(v)
                 t = tag(v)
                 if t is not None:
-                    output.write(tag(v) + " " + v + "\n")
+                    output.write(t + " " + v + "\n")
                 stack.append(jsonUrl)
 
 def tag(url):
