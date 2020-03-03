@@ -31,6 +31,9 @@ def studyOne(url):
 def loadPages(file):
     f = open(file)
     for line in f.readlines():
+        if "id=" not in line:
+            continue
+        
         t, url = line[0], line[2:-1]
         if t == "a":
             articlePages.append(url)

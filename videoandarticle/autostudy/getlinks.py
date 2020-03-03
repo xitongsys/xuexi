@@ -81,6 +81,8 @@ def getAllLinks(url, output):
         jsonDict = getJson(jsonUrl)
         if jsonDict is not None:
             dfsJson(jsonDict, output)
+            
+    print("get all links done")
 
 def loadPages(file):
     f = open(file)
