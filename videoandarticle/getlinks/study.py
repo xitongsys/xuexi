@@ -12,7 +12,7 @@ browser = webdriver.Firefox()
 cookies = None
 
 def studyOne(url):
-    global browser
+    global browser, cookies
     try:
         browser.get(url)
         html = browser.page_source
@@ -45,8 +45,10 @@ def loadFinishedPages(file):
 
 
 def study():
+    global cookies, browser
     loadPages(STUDY_LIST_FILE)
     loadFinishedPages(FINISHED_LIST_FILE)
+    cookies = browser.get_cookies()
 
     ai, vi = 0, 0
     while True:
@@ -70,4 +72,6 @@ def study():
         time.sleep(3600*20)
 
 if __name__ == '__main__':
+    print("Please login first")
+    sys.stdin.read()
     study()
