@@ -49,17 +49,26 @@ def dfsJson(jsonObject, output):
                 if jsonUrl is None:
                     continue
                 pages.add(v)
-                output.write(tag(v) + " " + v + "\n")
+                t = tag(v)
+                if t is not None:
+                    output.write(tag(v) + " " + v + "\n")
                 stack.append(jsonUrl)
 
 def tag(url):
-    #browser = webdriver.Firefox()
-    browser.get(url)
-    html = browser.page_source
-    #browser.quit()
-    if "video" in html:
-        return "v"
-    return "a"
+    global browser
+    try:
+        #browser = webdriver.Firefox()
+        browser.get(url)
+        html = browser.page_source
+        #browser.quit()
+        if "video" in html:
+            return "v"
+        return "a"
+
+    except Exception:
+        browser.quit()
+        browser = webdriver.Firefox()
+        return None
 
 
 def getAllLinks(url, output):
