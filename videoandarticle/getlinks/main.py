@@ -73,4 +73,6 @@ def getAllLinks(url, output):
 
 
 if __name__ == '__main__':
-    getAllLinks("http://www.xuexi.cn/lgdata/index.json", sys.stdout)
+    output = open("list.txt", "w+", buffering=1)
+    getAllLinks("http://www.xuexi.cn/lgdata/index.json", output)
+    ouptut.close()
