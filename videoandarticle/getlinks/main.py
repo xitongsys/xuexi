@@ -60,8 +60,12 @@ def tag(url):
         #browser = webdriver.Firefox()
         browser.get(url)
         html = browser.page_source
+        print(html)
         #browser.quit()
-        if "video" in html:
+
+        if "系统正在维护中" in html:
+            return None
+        elif "\"prism-player\"" in html:
             return "v"
         return "a"
 
@@ -82,6 +86,7 @@ def getAllLinks(url, output):
 
 
 if __name__ == '__main__':
+    # print(tag("https://www.xuexi.cn/lgpage/detail/index.html?id=17532310632353996301"))
     output = open("list.txt", "w+", buffering=1)
     getAllLinks("http://www.xuexi.cn/lgdata/index.json", output)
-    ouptut.close()
+    output.close()
