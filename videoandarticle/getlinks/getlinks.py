@@ -83,9 +83,16 @@ def getAllLinks(url, output):
         if jsonDict is not None:
             dfsJson(jsonDict, output)
 
+def loadPages(file):
+    f = open(file)
+    for line in f.readlines():
+        pages.add(line[2:-1])
+    f.close()
+
 
 if __name__ == '__main__':
+    loadPages("list.txt")
     # print(tag("https://www.xuexi.cn/lgpage/detail/index.html?id=17532310632353996301"))
-    output = open("list.txt", "w+", buffering=1)
+    output = open("list.txt", "a+", buffering=1)
     getAllLinks("http://www.xuexi.cn/lgdata/index.json", output)
     output.close()
