@@ -1,8 +1,9 @@
 import os,sys,math,requests,re
 from urllib.parse import urlparse
+from selenium import webdriver
 
 pages = set()
-stack = ['http://www.xuexi.cn/lgdata/index.json']
+stack = []
 
 def urlCheck(url: str) -> bool:
     regex = re.compile(
@@ -28,32 +29,47 @@ def getJson(url):
     except:
         return None
 
-def dfsJson(jsonObject):
+def dfsJson(jsonObject, output):
     jsonObjectStack = [jsonObject]
-
     while len(jsonObjectStack) > 0:
         jsonObject = jsonObjectStack[-1]; jsonObjectStack.pop()
+
+        items = []
         if type(jsonObject) is dict:
-            for (k,v) in jsonDict.items():
-                if type(v) is dict or type(v) is list:
-                    jsonObjectStack.append(v)
-                elif type(v) is str and k == "link" and urlCheck(v) and v not in pages:
-                    jsonUrl = urlToJsonUrl(v)
-                    if jsonUrl is None:
-                        continue
-                    pages.add(v)
-                    print(v)
-                    stack.append(jsonUrl)
+            items = jsonObject.items()
+        elif type(jsonObject) is list or type(jsonObject) is tuple:
+            items = jsonObject
 
-        if type(jsonObject) is list:
-            for v in jsonObject:
+        for v in items:
+            if type(v) is dict or type(v) is list or type(v) is tuple:
                 jsonObjectStack.append(v)
+            elif type(v) is str and urlCheck(v) and v not in pages:
+                jsonUrl = urlToJsonUrl(v)
+                if jsonUrl is None:
+                    continue
+                pages.add(v)
+                output.write(tag(v) + " " + v + "\n")
+                stack.append(jsonUrl)
 
-if __name__ == '__main__':            
+def tag(url):
+    browser = webdriver.Firefox()
+    browser.get(url)
+    html = browser.page_source
+    browser.quit()
+    if "video" in html:
+        return "v"
+    return "a"
+
+
+def getAllLinks(url, output):
+    stack.append(url)            
     while len(stack)>0:
         ln = len(stack)
         jsonUrl = stack[-1]; stack.pop()
         jsonDict = getJson(jsonUrl)
         if jsonDict is not None:
-            dfsJson(jsonDict)
+            dfsJson(jsonDict, output)
 
+
+if __name__ == '__main__':
+    getAllLinks("http://www.xuexi.cn/lgdata/index.json", sys.stdout)
