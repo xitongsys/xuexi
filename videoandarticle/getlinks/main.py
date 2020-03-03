@@ -4,6 +4,7 @@ from selenium import webdriver
 
 pages = set()
 stack = []
+browser = webdriver.Firefox()
 
 def urlCheck(url: str) -> bool:
     regex = re.compile(
@@ -52,10 +53,10 @@ def dfsJson(jsonObject, output):
                 stack.append(jsonUrl)
 
 def tag(url):
-    browser = webdriver.Firefox()
+    #browser = webdriver.Firefox()
     browser.get(url)
     html = browser.page_source
-    browser.quit()
+    #browser.quit()
     if "video" in html:
         return "v"
     return "a"
