@@ -4,7 +4,7 @@ from selenium import webdriver
 
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
-STUDY_NUMBER_EVERYDAY = 10
+STUDY_NUMBER_EVERYDAY = 6
 
 finishedPages = set()
 videoPages, articlePages = [], []
@@ -16,7 +16,8 @@ def studyOne(url):
     try:
         browser.get(url)
         html = browser.page_source
-        time.sleep(10)
+        browser.find_element_by_tag_name("body").click()
+        time.sleep(60 * 3)
         finishedPages.add(url)
         f = open(FINISHED_LIST_FILE, "a+")
         f.write(url + "\n")
@@ -33,7 +34,7 @@ def loadPages(file):
     for line in f.readlines():
         if "id=" not in line:
             continue
-        
+
         t, url = line[0], line[2:-1]
         if t == "a":
             articlePages.append(url)
