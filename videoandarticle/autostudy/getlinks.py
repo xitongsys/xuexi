@@ -52,7 +52,7 @@ def dfsJson(jsonObject, output):
                 t = tag(v)
                 if t is not None:
                     output.write(t + " " + v + "\n")
-                stack.append(jsonUrl)
+                    stack.append(jsonUrl)
 
 def tag(url):
     global browser
@@ -77,7 +77,6 @@ def tag(url):
 def getAllLinks(url, output):
     stack.append(url)            
     while len(stack)>0:
-        ln = len(stack)
         jsonUrl = stack[-1]; stack.pop()
         jsonDict = getJson(jsonUrl)
         if jsonDict is not None:
