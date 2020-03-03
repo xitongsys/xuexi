@@ -60,7 +60,6 @@ def tag(url):
         #browser = webdriver.Firefox()
         browser.get(url)
         html = browser.page_source
-        print(html)
         #browser.quit()
 
         if "系统正在维护中" in html:
