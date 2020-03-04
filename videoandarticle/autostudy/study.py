@@ -9,7 +9,10 @@ STUDY_NUMBER_EVERYDAY = 6
 
 finishedPages = set()
 videoPages, articlePages = [], []
-browser = webdriver.Firefox()
+fp = webdriver.FirefoxProfile()
+fp.set_preference("media.autoplay.default", 0)
+fp.set_preference("media.block-autoplay-until-in-foreground", False)
+browser = webdriver.Firefox(firefox_profile=fp)
 cookies = None
 
 def studyOne(url):
@@ -74,6 +77,7 @@ def study():
             if url in finishedPages:
                 continue
             studyOne(url)
+            print("study article: ", url)
             an += 1
 
         while vn < STUDY_NUMBER_EVERYDAY and vi < len(videoPages):
@@ -82,6 +86,7 @@ def study():
             if url in finishedPages:
                 continue
             studyOne(url)
+            print("study video: ", url)
             vn += 1
         
         time.sleep(3600*20)
