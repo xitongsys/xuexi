@@ -21,8 +21,11 @@ def studyOne(url):
         for i in range(0, int(60 * 3.5)):
             element = elements[(i%len(elements))]
             if element is not None:
-                hover = ActionChains(browser).move_to_element(element)
-                hover.perform()
+                try:
+                    hover = ActionChains(browser).move_to_element(element)
+                    hover.perform()
+                except:
+                    pass
             time.sleep(1)
 
         finishedPages.add(url)
@@ -32,10 +35,10 @@ def studyOne(url):
 
     except Exception as e:
         print(e)
-        browser.quit()
-        browser = webdriver.Firefox()
-        for cookie in cookies:
-            browser.add_cookie(cookie)
+        # browser.quit()
+        # browser = webdriver.Firefox()
+        # for cookie in cookies:
+        #     browser.add_cookie(cookie)
 
 def loadPages(file):
     f = open(file)
@@ -81,7 +84,7 @@ def study():
             studyOne(url)
             vn += 1
         
-        time.sleep(60*10)
+        time.sleep(3600*20)
 
 if __name__ == '__main__':
     input("Please login first")
