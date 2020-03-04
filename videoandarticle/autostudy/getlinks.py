@@ -95,5 +95,7 @@ if __name__ == '__main__':
     loadPages("list.txt")
     # print(tag("https://www.xuexi.cn/lgpage/detail/index.html?id=17532310632353996301"))
     output = open("list.txt", "a+", buffering=1)
-    getAllLinks("http://www.xuexi.cn/lgdata/index.json", output)
+    # getAllLinks("http://www.xuexi.cn/lgdata/index.json", output)
+    # getAllLinks("https://www.xuexi.cn/lgdata/0809b8b6ab8a81a4f55ce9cbefa16eff/ae60b027cb83715fd0eeb7bb2527e88b.json", output)
+    getAllLinks("https://www.xuexi.cn/lgdata/0c401d2cbd773e79d617c31d2883e47d/9b0f04ec6509904be734f5f609a3604a.json", output)
     output.close()
