@@ -1,6 +1,7 @@
 import os,sys,math,requests,re,time
 from urllib.parse import urlparse
 from selenium import webdriver
+from selenium.webdriver import ActionChains
 
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
@@ -16,14 +17,21 @@ def studyOne(url):
     try:
         browser.get(url)
         html = browser.page_source
-        browser.find_element_by_tag_name("body").click()
-        time.sleep(60 * 3)
+        elements = browser.find_elements_by_tag_name("div")
+        for i in range(0, int(60 * 3.5)):
+            element = elements[(i%len(elements))]
+            if element is not None:
+                hover = ActionChains(browser).move_to_element(element)
+                hover.perform()
+            time.sleep(1)
+
         finishedPages.add(url)
         f = open(FINISHED_LIST_FILE, "a+")
         f.write(url + "\n")
         f.close()
 
-    except Exception:
+    except Exception as e:
+        print(e)
         browser.quit()
         browser = webdriver.Firefox()
         for cookie in cookies:
@@ -73,7 +81,7 @@ def study():
             studyOne(url)
             vn += 1
         
-        time.sleep(3600*20)
+        time.sleep(60*10)
 
 if __name__ == '__main__':
     input("Please login first")
