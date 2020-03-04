@@ -46,9 +46,6 @@ def studyOne(url):
 def loadPages(file):
     f = open(file)
     for line in f.readlines():
-        if "id=" not in line:
-            continue
-
         t, url = line[0], line[2:-1]
         if t == "a":
             articlePages.append(url)
@@ -71,6 +68,17 @@ def study():
     ai, vi = 0, 0
     while True:
         an, vn = 0, 0
+        while vn < STUDY_NUMBER_EVERYDAY and vi < len(videoPages):
+            url = videoPages[vi]
+            vi += 1
+            if url in finishedPages:
+                continue
+            studyOne(url)
+            print("study video: ", url)
+            vn += 1
+
+        print("video study finished")
+
         while an < STUDY_NUMBER_EVERYDAY and ai < len(articlePages):
             url = articlePages[ai]
             ai += 1
@@ -80,15 +88,8 @@ def study():
             print("study article: ", url)
             an += 1
 
-        while vn < STUDY_NUMBER_EVERYDAY and vi < len(videoPages):
-            url = videoPages[vi]
-            vi += 1
-            if url in finishedPages:
-                continue
-            studyOne(url)
-            print("study video: ", url)
-            vn += 1
-        
+        print("article study finished")
+       
         time.sleep(3600*20)
 
 if __name__ == '__main__':
