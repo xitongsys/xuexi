@@ -92,5 +92,6 @@ def study():
         time.sleep(3600*20)
 
 if __name__ == '__main__':
+    browser.get("https://www.xuexi.cn")
     input("Please login first")
     study()
