@@ -69,7 +69,8 @@ def study():
     ai, vi = 0, 0
     flag = False
     while True:
-        time.sleep(60)
+        browser.get("about:home")
+        time.sleep(60 * 10)
         h = datetime.datetime.now().hour
         if h != TIME_TO_STUDY:
             flag = False
@@ -100,7 +101,6 @@ def study():
             an += 1
 
         print("article study finished")
-        browser.get("about:home")
         flag = True
        
 if __name__ == '__main__':
