@@ -100,6 +100,7 @@ def study():
             an += 1
 
         print("article study finished")
+        browser.get("about:home")
         flag = True
        
 if __name__ == '__main__':
