@@ -6,7 +6,7 @@ from selenium.webdriver import ActionChains
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
 STUDY_NUMBER_EVERYDAY = 6
-TIME_TO_STUDY = 6 # 6 clock every day
+TIME_TO_STUDY = 22 # utc22, beijing 06
 
 finishedPages = set()
 videoPages, articlePages = [], []
@@ -71,7 +71,7 @@ def study():
     while True:
         browser.get("about:home")
         time.sleep(60 * 10)
-        h = datetime.datetime.now().hour
+        h = datetime.datetime.utcnow().hour
         if h != TIME_TO_STUDY:
             flag = False
             continue
