@@ -1,4 +1,4 @@
-import os,sys,math,requests,re,time
+import os,sys,math,requests,re,time,datetime
 from urllib.parse import urlparse
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -6,6 +6,7 @@ from selenium.webdriver import ActionChains
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
 STUDY_NUMBER_EVERYDAY = 6
+TIME_TO_STUDY = 6 # 6 clock every day
 
 finishedPages = set()
 videoPages, articlePages = [], []
@@ -66,7 +67,17 @@ def study():
     cookies = browser.get_cookies()
 
     ai, vi = 0, 0
+    flag = False
     while True:
+        time.sleep(60)
+        h = datetime.datetime.now().hour
+        if h != TIME_TO_STUDY:
+            flag = False
+            continue
+
+        if h == TIME_TO_STUDY and flag:
+            continue
+
         an, vn = 0, 0
         while vn < STUDY_NUMBER_EVERYDAY and vi < len(videoPages):
             url = videoPages[vi]
@@ -89,9 +100,8 @@ def study():
             an += 1
 
         print("article study finished")
+        flag = True
        
-        time.sleep(3600*20)
-
 if __name__ == '__main__':
     browser.get("https://www.xuexi.cn")
     input("Please login first")
