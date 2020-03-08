@@ -1,4 +1,4 @@
-import os,sys,math,requests,re,time,datetime
+import os,sys,math,requests,re,time,datetime,random
 from urllib.parse import urlparse
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -16,6 +16,18 @@ videoPages, articlePages = [], []
 # browser = webdriver.Firefox(firefox_profile=fp)
 browser = webdriver.Chrome()
 cookies = None
+
+def moveMouseRandom():
+    elements = browser.find_elements_by_tag_name("div")
+    idx = random.randint(0, len(elements))
+    element = elements[idx]
+    if element is not None:
+        try:
+            hover = ActionChains(browser).move_to_element(element)
+            hover.perform()
+        except:
+            pass
+    
 
 def studyOne(url):
     global browser, cookies
@@ -71,7 +83,8 @@ def study():
     flag = False
     while True:
         # browser.get("about:home")
-        time.sleep(10)
+        time.sleep(100)
+        moveMouseRandom()
         h = datetime.datetime.utcnow().hour
         if h != TIME_TO_STUDY:
             flag = False
