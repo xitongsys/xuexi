@@ -18,15 +18,15 @@ browser = webdriver.Chrome()
 cookies = None
 
 def moveMouseRandom():
-    elements = browser.find_elements_by_tag_name("div")
-    idx = random.randint(0, len(elements))
-    element = elements[idx]
-    if element is not None:
-        try:
+    try:
+        elements = browser.find_elements_by_tag_name("div")
+        idx = random.randint(0, len(elements)-1)
+        element = elements[idx]
+        if element is not None:
             hover = ActionChains(browser).move_to_element(element)
             hover.perform()
-        except:
-            pass
+    except:
+        pass
     
 
 def studyOne(url):
