@@ -6,14 +6,15 @@ from selenium.webdriver import ActionChains
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
 STUDY_NUMBER_EVERYDAY = 6
-TIME_TO_STUDY = 22 # utc22, beijing 06
+TIME_TO_STUDY = 9 # utc22, beijing 06
 
 finishedPages = set()
 videoPages, articlePages = [], []
-fp = webdriver.FirefoxProfile()
-fp.set_preference("media.autoplay.default", 0)
-fp.set_preference("media.block-autoplay-until-in-foreground", False)
-browser = webdriver.Firefox(firefox_profile=fp)
+# fp = webdriver.FirefoxProfile()
+# fp.set_preference("media.autoplay.default", 0)
+# fp.set_preference("media.block-autoplay-until-in-foreground", False)
+# browser = webdriver.Firefox(firefox_profile=fp)
+browser = webdriver.Chrome()
 cookies = None
 
 def studyOne(url):
@@ -69,8 +70,8 @@ def study():
     ai, vi = 0, 0
     flag = False
     while True:
-        browser.get("about:home")
-        time.sleep(60 * 10)
+        # browser.get("about:home")
+        time.sleep(10)
         h = datetime.datetime.utcnow().hour
         if h != TIME_TO_STUDY:
             flag = False
