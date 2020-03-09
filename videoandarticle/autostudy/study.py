@@ -6,16 +6,28 @@ from selenium.webdriver import ActionChains
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
 STUDY_NUMBER_EVERYDAY = 6
-TIME_TO_STUDY = 9 # utc22, beijing 06
+TIME_TO_STUDY = 22 # utc22, beijing 06
+HOME_URL = "https://xuexi.cn"
 
 finishedPages = set()
 videoPages, articlePages = [], []
-# fp = webdriver.FirefoxProfile()
-# fp.set_preference("media.autoplay.default", 0)
-# fp.set_preference("media.block-autoplay-until-in-foreground", False)
-# browser = webdriver.Firefox(firefox_profile=fp)
 browser = webdriver.Chrome()
 cookies = None
+
+def restartBrowser():
+    global browser, cookies, HOME_URL
+    try:
+        browser.quit()
+    except:
+        pass
+
+    browser = webdriver.Chrome()
+    browser.get(HOME_URL)
+    for cookie in cookies:
+        if 'expiry' in cookie:
+            del cookie['expiry']
+        browser.add_cookie(cookie)
+
 
 def moveMouseRandom():
     try:
@@ -52,10 +64,7 @@ def studyOne(url):
 
     except Exception as e:
         print(e)
-        # browser.quit()
-        # browser = webdriver.Firefox()
-        # for cookie in cookies:
-        #     browser.add_cookie(cookie)
+        restartBrowser()
 
 def loadPages(file):
     f = open(file)
@@ -79,11 +88,17 @@ def study():
     loadFinishedPages(FINISHED_LIST_FILE)
     cookies = browser.get_cookies()
 
+    print(cookies)
+
     ai, vi = 0, 0
     flag = False
+    idx = 0
     while True:
-        # browser.get("about:home")
-        time.sleep(100)
+        if idx % 10 == 0:
+            restartBrowser()
+        idx += 1
+
+        time.sleep(60)
         moveMouseRandom()
         h = datetime.datetime.utcnow().hour
         if h != TIME_TO_STUDY:
