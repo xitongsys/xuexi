@@ -18,16 +18,15 @@ def restartBrowser():
     global browser, cookies, HOME_URL
     try:
         browser.quit()
+        browser = webdriver.Chrome()
+        browser.get(HOME_URL)
+        for cookie in cookies:
+            if 'expiry' in cookie:
+                del cookie['expiry']
+            browser.add_cookie(cookie)
     except:
-        pass
-
-    browser = webdriver.Chrome()
-    browser.get(HOME_URL)
-    for cookie in cookies:
-        if 'expiry' in cookie:
-            del cookie['expiry']
-        browser.add_cookie(cookie)
-
+        time.sleep(2)
+        restartBrowser()
 
 def moveMouseRandom():
     try:
