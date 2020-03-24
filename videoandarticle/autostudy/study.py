@@ -1,4 +1,4 @@
-import os,sys,math,requests,re,time,datetime,random
+import os,sys,math,requests,re,time,datetime,random,json
 from urllib.parse import urlparse
 from selenium import webdriver
 from selenium.webdriver import ActionChains
@@ -8,6 +8,7 @@ FINISHED_LIST_FILE = 'finished.txt'
 STUDY_NUMBER_EVERYDAY = 6
 TIME_TO_STUDY = 22 # utc22, beijing 06
 HOME_URL = "https://xuexi.cn"
+COOKIE_FILE = "cookies.json"
 
 finishedPages = set()
 videoPages, articlePages = [], []
@@ -80,13 +81,27 @@ def loadFinishedPages(file):
         finishedPages.add(line[:-1])
     f.close()
 
+def loadCookies():
+    global cookies, browser
+    if os.path.exists(COOKIE_FILE):
+        f = open(COOKIE_FILE, "r")
+        s = f.read()
+        f.close()
+        cookies = json.loads(s)
+    else:
+        input("no cookies.json found, please login first")
+        cookies = browser.get_cookies()
+        f = open(COOKIE_FILE, "w+")
+        f.write(json.dumps(cookies))
+        f.close()
+
 
 def study():
     global cookies, browser
     loadPages(STUDY_LIST_FILE)
     loadFinishedPages(FINISHED_LIST_FILE)
-    cookies = browser.get_cookies()
 
+    loadCookies()
     print(cookies)
 
     ai, vi = 0, 0
@@ -133,5 +148,4 @@ def study():
        
 if __name__ == '__main__':
     browser.get("https://www.xuexi.cn")
-    input("Please login first")
     study()
