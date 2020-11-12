@@ -12,7 +12,9 @@ COOKIE_FILE = "cookies.json"
 
 finishedPages = set()
 videoPages, articlePages = [], []
-browser = webdriver.Chrome()
+opts = webdriver.ChromeOptions()
+opts.add_argument('--no-sandbox')
+browser = webdriver.Chrome(options=opts)
 cookies = None
 
 def restartBrowser():
