@@ -6,22 +6,24 @@ from selenium.webdriver import ActionChains
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
 STUDY_NUMBER_EVERYDAY = 6
-TIME_TO_STUDY = 22 # utc22, beijing 06
+TIME_TO_STUDY = 23 # utc22, beijing 06
 HOME_URL = "https://xuexi.cn"
 COOKIE_FILE = "cookies.json"
 
 finishedPages = set()
 videoPages, articlePages = [], []
-opts = webdriver.ChromeOptions()
-opts.add_argument('--no-sandbox')
-browser = webdriver.Chrome(options=opts)
+#opts = webdriver.ChromeOptions()
+#opts.add_argument('--no-sandbox')
+#browser = webdriver.Chrome(options=opts)
+browser = webdriver.Firefox()
 cookies = None
 
 def restartBrowser():
     global browser, cookies, HOME_URL
     try:
         browser.quit()
-        browser = webdriver.Chrome()
+        #browser = webdriver.Chrome()
+        browser = webdriver.Firefox()
         browser.get(HOME_URL)
         for cookie in cookies:
             if 'expiry' in cookie:
