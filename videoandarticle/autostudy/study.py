@@ -6,7 +6,7 @@ from selenium.webdriver import ActionChains
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
 STUDY_NUMBER_EVERYDAY = 6
-TIME_TO_STUDY = 23 # utc22, beijing 06
+TIME_TO_STUDY = 22 # utc22, beijing 06
 HOME_URL = "https://xuexi.cn"
 COOKIE_FILE = "cookies.json"
 
@@ -108,16 +108,12 @@ def study():
     loadCookies()
     print(cookies)
 
+    browser.quit()
+
     ai, vi = 0, 0
     flag = False
-    idx = 0
     while True:
-        if idx % 10 == 0:
-            restartBrowser()
-        idx += 1
-
         time.sleep(60)
-        moveMouseRandom()
         h = datetime.datetime.utcnow().hour
         if h != TIME_TO_STUDY:
             flag = False
@@ -125,6 +121,8 @@ def study():
 
         if h == TIME_TO_STUDY and flag:
             continue
+
+        restartBrowser()
 
         an, vn = 0, 0
         while vn < STUDY_NUMBER_EVERYDAY and vi < len(videoPages):
@@ -148,6 +146,8 @@ def study():
             an += 1
 
         print("article study finished")
+        browser.quit()
+        exit(0)
         flag = True
        
 if __name__ == '__main__':
