@@ -2,6 +2,7 @@ import os,sys,math,requests,re,time,datetime,random,json
 from urllib.parse import urlparse
 from selenium import webdriver
 from selenium.webdriver import ActionChains
+import schedule
 
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
@@ -15,7 +16,7 @@ videoPages, articlePages = [], []
 #opts = webdriver.ChromeOptions()
 #opts.add_argument('--no-sandbox')
 #browser = webdriver.Chrome(options=opts)
-browser = webdriver.Firefox()
+browser = None
 cookies = None
 
 def restartBrowser():
@@ -44,7 +45,6 @@ def moveMouseRandom():
     except:
         pass
     
-
 def studyOne(url):
     global browser, cookies
     try:
@@ -102,28 +102,16 @@ def loadCookies():
 
 def study():
     global cookies, browser
-    loadPages(STUDY_LIST_FILE)
-    loadFinishedPages(FINISHED_LIST_FILE)
+    try:
+        browser = webdriver.Firefox()
+        loadPages(STUDY_LIST_FILE)
+        loadFinishedPages(FINISHED_LIST_FILE)
 
-    loadCookies()
-    print(cookies)
-
-    browser.quit()
-
-    ai, vi = 0, 0
-    flag = False
-    while True:
-        time.sleep(60)
-        h = datetime.datetime.utcnow().hour
-        if h != TIME_TO_STUDY:
-            flag = False
-            continue
-
-        if h == TIME_TO_STUDY and flag:
-            continue
+        loadCookies()
+        print(cookies)
 
         restartBrowser()
-
+        ai, vi = 0, 0
         an, vn = 0, 0
         while vn < STUDY_NUMBER_EVERYDAY and vi < len(videoPages):
             url = videoPages[vi]
@@ -147,9 +135,13 @@ def study():
 
         print("article study finished")
         browser.quit()
-        exit(0)
-        flag = True
+    except Exception as err:
+        print(err)
+        if browser is not None:
+            browser.quit()
        
 if __name__ == '__main__':
-    browser.get("https://www.xuexi.cn")
-    study()
+    schedule.every().day.at("21:10").do(study)
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
