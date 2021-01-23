@@ -7,7 +7,6 @@ import schedule
 STUDY_LIST_FILE = 'list.txt'
 FINISHED_LIST_FILE = 'finished.txt'
 STUDY_NUMBER_EVERYDAY = 6
-TIME_TO_STUDY = 22 # utc22, beijing 06
 HOME_URL = "https://xuexi.cn"
 COOKIE_FILE = "cookies.json"
 
