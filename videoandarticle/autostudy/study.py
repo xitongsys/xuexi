@@ -46,10 +46,27 @@ def moveMouseRandom():
     
 def studyOne(url):
     global browser, cookies
+    from selenium.webdriver.common.by import By
+
     try:
         browser.get(url)
         html = browser.page_source
-        elements = browser.find_elements_by_tag_name("div")
+        time.sleep(10)
+
+        try:
+            player = browser.find_element(By.CLASS_NAME, "prism-big-play-btn")
+            #browser.execute_script("arguments[0].click();", player)
+            player.click()
+        except:
+            pass
+
+
+
+        #elements = browser.find_elements_by_tag_name("div")
+        elements = browser.find_elements(By.TAG_NAME, "div")
+
+
+        
         for i in range(0, int(60 * 3.5)):
             element = elements[(i%len(elements))]
             if element is not None:
@@ -140,7 +157,8 @@ def study():
             browser.quit()
        
 if __name__ == '__main__':
-    schedule.every().day.at("21:10").do(study)
+    #study()
+    schedule.every().day.at("15:09:00").do(study)
     while True:
         schedule.run_pending()
         time.sleep(1)
