@@ -40,18 +40,25 @@ for i in range(1, 60):
     rows = rows + datalist
 
 df = pd.DataFrame(rows)
-df = df[(df.examStatus == "0") & (df.showStatusMsg == "未学习") & (df.resourceType == "VIDEO") & (df.examStatus == "0")]
-
 df.to_pickle("ids.pkl")
 
 
 #%% study
 
 df = pd.read_pickle("ids.pkl")
-df = df.sort_values('courseDuration')
+df = df[(df.examStatus == "0") & (df.showStatusMsg == "未学习") & (df.resourceType == "VIDEO") & (df.assessementType == "1")]
+df['key'] = df['courseDuration'] / df['creditHour']
+df = df.sort_values('key')
+
+
+
 for i in range(len(df)):
     row = df.iloc[i]
     id, duration = int(row['id']), int(row['courseDuration']*60 + 50)
+    
+    course_url = f"https://gbwlxy.dtdjzx.gov.cn/content#/commend/coursedetail?courseId={id}"
+    res = requests.get(url=course_url, headers=headers)
+    
     
     
     start_url = 'https://gbwlxy.dtdjzx.gov.cn/__api/api/study/start'
